@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0b1a2e">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Alpha Blocks">
+<title>ALPHA BLOCKS | Layout SLP · ALDEP · CORELAP · CRAFT</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+</head>
+<body>
+<!-- Barra superior (visible desde el menú): regresar + ajustes -->
+<div id="topbar" class="hidden">
+  <button id="btnBack" class="tb">‹ Regresar</button>
+  <span class="tbt">ALPHA BLOCKS</span>
+  <span class="tbr"><button id="fsTop" class="tb fsbtn" type="button" aria-label="Pantalla completa">⛶</button><button id="btnSet" class="tb" aria-label="Ajustes">⚙ Ajustes</button></span>
+</div>
+<!-- Botón de pantalla completa siempre disponible (cuando no hay barra superior) -->
+<button id="fsFloat" class="fsbtn" type="button" aria-label="Pantalla completa">⛶</button>
+<div id="settings" class="hidden">
+  <h3>Ajustes</h3>
+  <label class="sw"><input type="checkbox" id="sndOn" checked> Sonido activado</label>
+  <label class="sw"><input type="checkbox" id="musOn" checked> Música de fondo</label>
+  <label>Volumen <span id="volTxt">50%</span><input type="range" id="vol" min="0" max="100" value="50"></label>
+  <button class="btn alt" id="fsBtn" type="button">⛶ Pantalla completa</button>
+  <button class="btn" id="setClose">Cerrar</button>
+</div>
+
+<!-- Portada: plano en blanco que se dibuja solo + botón EMPEZAR -->
+<section class="view active" id="v-home">
+  <svg class="bp" viewBox="0 0 1000 620" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+    <rect class="ln" x="60" y="230" width="880" height="162"/>
+    <line class="th" x1="60" y1="255" x2="940" y2="255"/><line class="th" x1="60" y1="367" x2="940" y2="367"/>
+    <line class="th" x1="245" y1="230" x2="245" y2="392"/><line class="th" x1="430" y1="230" x2="430" y2="392"/>
+    <line class="th" x1="615" y1="230" x2="615" y2="392"/><line class="th" x1="780" y1="230" x2="780" y2="392"/>
+    <line class="ln" x1="60" y1="205" x2="940" y2="205"/><line class="ln" x1="60" y1="195" x2="60" y2="215"/><line class="ln" x1="940" y1="195" x2="940" y2="215"/>
+    <line class="ln" x1="970" y1="230" x2="970" y2="392"/><line class="ln" x1="960" y1="230" x2="980" y2="230"/><line class="ln" x1="960" y1="392" x2="980" y2="392"/>
+    <text x="500" y="196" text-anchor="middle">141.50 m</text><text x="990" y="316" transform="rotate(90 990 316)" text-anchor="middle">26.00 m</text>
+  </svg>
+  <div class="center"><div class="panel">
+    <div class="sys">SISTEMA DE INGENIERÍA DE INSTALACIONES</div>
+    <div class="badge">AB</div>
+    <h1>ALPHA BLOCKS</h1>
+    <p>Planeación y optimización de distribución de planta</p>
+    <p class="mono">Predio 141.50 m × 26.00 m · 3,679 m²</p>
+    <div class="startopts">
+      <label class="opt"><input type="checkbox" id="startSnd" checked><span>🔊 Sonido y música</span></label>
+      <label class="opt" id="startFsLbl"><input type="checkbox" id="startFs" checked><span>⛶ Pantalla completa</span></label>
+    </div>
+    <button class="btn big" id="btnStart">EMPEZAR</button>
+    <small class="hint" id="startHint">Elija sus opciones y toque EMPEZAR para iniciar el sistema</small>
+  </div></div>
+</section>
+
+<!-- Intro: construcciones de blocks al fondo, letras ALPHA BLOCKS cayendo una por una y EQUIPO CACAHUATE -->
+<section class="view" id="v-intro">
+  <div id="skyline-bg"></div>
+  <main id="stage" class="stage">
+    <h1 id="title" aria-label="ALPHA BLOCKS"></h1>
+    <div class="subtitle-wrapper">
+      <p id="subtitle" class="hidden">EQUIPO CACAHUATE</p>
+    </div>
+  </main>
+  <button class="lnk" id="introSkip">Saltar ›</button>
+</section>
+
+<section class="view" id="v-tut">
+  <div class="wrap narrow">
+    <div class="imgframe"><img id="tutImg" alt="Personaje guía"><div id="imgPh">Imagen pendiente: <code id="imgPath"></code></div></div>
+    <div class="dialog2">
+      <span class="tag">INGENIERÍA INDUSTRIAL · GUÍA</span>
+      <h3 id="tutTitle"></h3><p id="tutText"></p>
+      <div class="dlgfoot"><div class="dots" id="dots"></div>
+        <button class="lnk" id="tutSkip">Saltar</button>
+        <button class="btn2" id="tutPrev">‹</button>
+        <button class="btn blue" id="tutNext">Siguiente ›</button></div>
+    </div>
+  </div>
+</section>
+
+<section class="view" id="v-menu">
+  <video id="bgVideo" src="videos/menu-fondo.mp4" autoplay loop muted playsinline preload="auto" aria-hidden="true" onerror="this.style.display='none'"></video><div class="bgshade"></div>
+  <div class="wrap">
+  <h2>¿Qué desea abrir?</h2>
+  <div id="chMenu"></div>
+  <div class="grid">
+    <button class="card" id="cMet"><span>01</span><b>Métodos</b><small>ALDEP · CORELAP · CRAFT, paso a paso</small></button>
+    <button class="card" id="cGal"><span>02</span><b>Galería</b><small>Gráficas, tablas y diagramas</small></button>
+    <button class="card" id="cPlans"><span>03</span><b>Planos finales</b><small>Vertical · PDF y Word</small></button>
+    <button class="card" id="cVid"><span>04</span><b>Videos explicativos</b><small>Proceso de manufactura, de la compra a la venta</small></button>
+  </div>
+  <footer class="credit">ALPHA BLOCKS · Equipo Cacahuate · Proyecto creado por YEPJ</footer>
+</div></section>
+
+<section class="view" id="v-hub"><div class="wrap"><h2>Los 3 métodos</h2>
+  <div id="chHub"></div>
+  <div class="tip">Recorra en orden: ALDEP → CORELAP → CRAFT. Las tres opciones usan <b>las mismas áreas y los mismos costos unitarios</b>; solo cambia la distribución y el sistema de transporte: <b>manual</b> (opción 1), <b>semiautomático</b> (opción 2) o <b>automatizado</b> (opción 3). El costo del transporte se calcula distinto en cada uno: sueldos, equipo que ya existe o maquinaria nueva.</div>
+  <div class="grid">
+    <button class="card" data-m="aldep"><span>A</span><b>ALDEP</b><small>Barrido y diagrama de relaciones</small></button>
+    <button class="card" data-m="corelap"><span>C</span><b>CORELAP</b><small>TCR y diagrama de espacios</small></button>
+    <button class="card" data-m="craft"><span>R</span><b>CRAFT</b><small>Flujos, costos y patines</small></button>
+  </div></div></section>
+
+<section class="view" id="v-method"><div class="wrap"><h2 id="mTitle"></h2><p class="partslabel">Elige la parte del método, de la carta de relaciones al resultado:</p><div class="steps" id="mSteps"></div><div class="prog"><i id="progI"></i></div><div id="mBody"></div>
+  <div class="row"><button class="btn alt" id="mPrev">‹ Paso anterior</button><button class="btn" id="mNext">Siguiente paso ›</button></div></div></section>
+
+<section class="view" id="v-gal"><div class="wrap"><h2>Galería de gráficas, tablas y diagramas</h2><div id="galBody"></div></div></section>
+<section class="view" id="v-vid"><div class="wrap"><h2>Videos explicativos</h2>
+  <p class="partslabel">Proceso de manufactura de una bloquera, desde la compra de la materia prima hasta la venta. Elige un paso:</p>
+  <div class="vlayout"><div id="vidList"></div><div id="vidPlayer"></div></div></div></section>
+<section class="view" id="v-plans"><div class="wrap"><h2>Planos finales</h2><div class="steps" id="planTabs"></div><div id="planBody"></div></div></section>
+
+<div id="tutHint" class="hidden" aria-hidden="true">↓ Desliza hacia abajo ↓</div>
+<script src="script.js"></script>
+</body>
+</html>
